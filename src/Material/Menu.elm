@@ -19,7 +19,7 @@ module Material.Menu
 
         , Model
         , defaultModel
-        , Msg(..)
+        , Msg
         , update
         , view
         )
@@ -102,14 +102,19 @@ import Html.Attributes as Html
 import Html.Events as Html exposing (defaultOptions)
 import Html exposing (..)
 import Json.Decode as Json exposing (Decoder)
-import Material.Component as Component exposing (Indexed, Index)
-import Material.Dropdown as Dropdown exposing (Alignment(..))
-import Material.Dropdown.Geometry as Geometry exposing (Geometry, Element)
+import Json.Encode exposing (string)
+import Material.Component as Component exposing (Indexed)
+import Material.Dropdown as Dropdown
 import Material.Dropdown.Item as Item
 import Material.Helpers as Helpers exposing (pure, map1st)
 import Material.Icon as Icon
-import Material.Options as Options exposing (cs, css, styled, styled_, when)
-import Material.Options.Internal as Internal
+import Material.Internal.Dropdown as Dropdown
+import Material.Internal.Geometry as Geometry exposing (Geometry)
+import Material.Internal.Menu exposing (ItemInfo, Msg(..))
+import Material.Internal.Options as Internal
+import Material.Msg exposing (Index) 
+import Material.Options as Options exposing (Style, cs, css, styled, styled_, when)
+import Material.Ripple as Ripple
 import Mouse
 import String
 
@@ -143,9 +148,9 @@ transitionDuration =
 subscriptions : Model -> Sub (Msg m)
 subscriptions model =
     if model.dropdown.open then
-        -- Mouse.clicks (Click alignment???)
+        -- Mouse.clicks (Dropdown.Click alignment???)
         -- TODO ^^^^^
-        Mouse.clicks (Click TopLeft)
+        Mouse.clicks (Dropdown.Click Dropdown.TopLeft >> DropdownMsg)
     else
         Sub.none
 
@@ -172,7 +177,22 @@ type alias Item m =
 -}
 item : List (Item.Property m) -> List (Html m) -> Item m
 item =
-  Item.item
+    Item.item
+
+
+type alias ItemConfig m=
+    { enabled : Bool
+    , divider : Bool
+    , onSelect : Maybe m
+    }
+
+
+defaultItemConfig : ItemConfig m
+defaultItemConfig =
+    { enabled = True
+    , divider = False
+    , onSelect = Nothing
+    }
 
 
 {-| Default component model
@@ -190,23 +210,16 @@ defaultModel =
 
 {-| Component action.
 -}
-type Msg m
-    = Open Geometry
-    | Close
-    | Key (Maybe ItemIndex) (List (ItemSummary m)) KeyCode Geometry
-    | Click Alignment Mouse.Position
-    | MenuMsg (Dropdown.Msg m)
+type alias Msg m
+    = Material.Internal.Menu.Msg m
 
 
-type alias ItemIndex =
-    Int
-
-type alias ItemSummary m =
-    Internal.Summary (Item.Config m) m
+type alias ItemIndex
+    = Material.Internal.Menu.ItemIndex
 
 
-type alias KeyCode =
-    Int
+type alias KeyCode
+    = Material.Internal.Menu.KeyCode
 
 
 {-| Component update.
@@ -222,7 +235,7 @@ update fwd msg model =
               Just _ ->
                 { model | ignoreClick = Nothing } ! []
               Nothing ->
-                update fwd (MenuMsg (Dropdown.Click a v)) model
+                update fwd (DropdownMsg (Dropdown.Click a v)) model
 
         Open g ->
           case model.ignoreClick of
@@ -231,7 +244,7 @@ update fwd msg model =
               Just _ ->
                 { model | ignoreClick = Nothing } ! []
               Nothing ->
-                update fwd (MenuMsg (Dropdown.Open g)) model
+                update fwd (DropdownMsg (Dropdown.Open g)) model
 
         Close ->
           case model.ignoreClick of
@@ -240,10 +253,10 @@ update fwd msg model =
               Just _ ->
                 { model | ignoreClick = Nothing } ! []
               Nothing ->
-                update fwd (MenuMsg Dropdown.Close) model
+                update fwd (DropdownMsg Dropdown.Close) model
 
-        Key defaultIndex itemSummaries keyCode g ->
-          update fwd (MenuMsg (Dropdown.Key defaultIndex itemSummaries keyCode g)) model
+        Key defaultIndex itemInfos keyCode g ->
+          update fwd (DropdownMsg (Dropdown.Key defaultIndex itemInfos keyCode g)) model
           |> -- Prevent next click triggered by quirks mode + subscriptions
              -- when opening with SPACE..
              ( if keyCode == 32 then
@@ -255,10 +268,10 @@ update fwd msg model =
                        identity
              )
 
-        MenuMsg msg_ ->
+        DropdownMsg msg_ ->
             let
               ( dropdown, cmds ) =
-                  Dropdown.update (MenuMsg >> fwd) msg_ model.dropdown
+                  Dropdown.update (DropdownMsg >> fwd) msg_ model.dropdown
             in
               { model | dropdown = dropdown } ! [ cmds ]
 
@@ -368,6 +381,14 @@ view lift model properties items =
         itemSummaries =
             List.map (Internal.collect Item.defaultConfig << .options) items
 
+        itemInfos =
+            itemSummaries
+            |> List.map (\{ config } ->
+                   { enabled = config.enabled
+                   , onSelect = config.onSelect
+                   }
+               )
+
         button =
             -- TODO: trigger
             styled_ Html.button
@@ -382,7 +403,7 @@ view lift model properties items =
                 )
             , Options.on "keydown"
                   ( Json.map2
-                        (Key defaultIndex itemSummaries)
+                        (Key defaultIndex itemInfos)
                         Html.keyCode
                         decodeGeometry
                     |> Json.map lift
@@ -408,7 +429,7 @@ view lift model properties items =
             (css "position" "relative" :: properties)
             []
             [ button
-            , Dropdown.view (MenuMsg >> lift) model.dropdown config.dropdown
+            , Dropdown.view (DropdownMsg >> lift) model.dropdown config.dropdown
 --              [ when (dropdownConfig.index /= Nothing)
 --                    (Dropdown.index (config.index |> Maybe.withDefault 0))
 --              ]
@@ -460,29 +481,21 @@ indicated in `Material`, and a user message `Select String`.
       ]
 -}
 render :
-    (Component.Msg button textfield (Msg m) layout toggles tooltip tabs select dispatch
-     -> m
-    )
-    -> Component.Index
+    (Material.Msg.Msg m -> m)
+    -> Index
     -> Store s
     -> List (Property m)
     -> List (Item m)
     -> Html m
 render =
-    Component.render get view Component.MenuMsg
+    Component.render get view Material.Msg.MenuMsg
 
 
 {-| TODO
 -}
-subs :
-    (Component.Msg button textfield (Msg msg) layout toggles tooltip tabs select dispatch
-     -> msg
-    )
-    -> Store s
-    -> Sub msg
+subs : (Material.Msg.Msg m -> m) -> Store s -> Sub m
 subs =
-    Component.subs Component.MenuMsg .menu subscriptions
-
+    Component.subs Material.Msg.MenuMsg .menu subscriptions
 
 
 -- HELPERS

@@ -22,7 +22,7 @@ module Material.Textfield
         , expandableIcon
         , Model
         , defaultModel
-        , Msg(..)
+        , Msg
         , update
         , view
         , Config
@@ -80,14 +80,20 @@ for a live demo.
 
 -}
 
-import Html exposing (div, span, Html, text)
 import Html.Attributes exposing (class, type_, style)
 import Html.Events exposing (targetValue, keyCode, defaultOptions)
+import Html exposing (div, span, Html, text)
 import Json.Decode as Decoder
-import Material.Component as Component exposing (Index, Indexed)
+import Material.Internal.Textfield exposing (Msg(..))
+import Material.Msg exposing (Index) 
+import Material.Component as Component exposing (Indexed)
 import Material.Options as Options exposing (cs, css, nop, Style, when)
-import Material.Options.Internal as Internal
+import Material.Internal.Options as Internal
 import Material.Icon as Icon
+import Material.Internal.Options as Internal
+import Material.Internal.Textfield exposing (Msg(..))
+import Material.Msg
+import Material.Options as Options exposing (cs, css, nop, Style, when)
 
 
 -- OPTIONS
@@ -312,13 +318,10 @@ defaultModel =
 -- ACTIONS, UPDATE
 
 
-{-| Component actions. `Input` carries the new value of the field.
+{-| Component actions. 
 -}
-type Msg
-    = Blur
-    | Focus
-    | Input String
-    | NoOp
+type alias Msg
+    = Material.Internal.Textfield.Msg
 
 
 {-| Component update.
@@ -503,7 +506,7 @@ type alias Store s =
 {-| Component react function.
 -}
 react
-    : ( Component.Msg button Msg menu layout toggles tooltip tabs select dispatch -> msg)
+    : (Material.Msg.Msg m -> msg)
     -> Msg
     -> Index
     -> Store s
@@ -511,7 +514,7 @@ react
 react =
     Component.react get
         set
-        Component.TextfieldMsg update
+        Material.Msg.TextfieldMsg update
 
 
 {-| Component render. Below is an example, assuming boilerplate setup as indicated
@@ -531,12 +534,14 @@ of the textfield's implementation, and so is mostly useful for positioning
 if you need to apply styling to the underlying `<input>` element.
 -}
 render
-    : (Component.Msg button Msg menu layout toggles tooltip tabs select (List m) -> m)
+    : (Material.Msg.Msg m -> m)
     -> Index
     -> Store s
     -> List (Property m)
     -> x
     -> Html m       
 render lift index store options =
-    Component.render get view Component.TextfieldMsg lift index store
+    Component.render get view Material.Msg.TextfieldMsg lift index store
         (Internal.dispatch lift :: options)
+
+-- TODO: use inject ^^^^^

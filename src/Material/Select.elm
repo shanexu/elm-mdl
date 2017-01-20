@@ -24,7 +24,7 @@ module Material.Select
 
         , Model
         , defaultModel
-        , Msg(..)
+        , Msg
         , update
         , view
         )
@@ -90,13 +90,17 @@ import Html.Events as Html exposing (defaultOptions, targetValue)
 import Html exposing (..)
 import Json.Decode as Json exposing (Decoder)
 import Material.Component as Component exposing (Indexed, Index)
-import Material.Dropdown as Dropdown exposing (Msg)
+import Material.Dropdown as Dropdown
 import Material.Dropdown.Geometry as Geometry exposing (Geometry)
 import Material.Dropdown.Item as Item
 import Material.Helpers as Helpers exposing (pure, map1st)
 import Material.Icon as Icon
+import Material.Internal.Dropdown as Dropdown
+import Material.Internal.Item as Item
+import Material.Internal.Options as Internal
+import Material.Internal.Select exposing (Msg(..))
+import Material.Msg
 import Material.Options as Options exposing (Style, cs, css, styled, styled_, when)
-import Material.Options.Internal as Internal
 import Material.Ripple as Ripple
 import Material.Textfield as Textfield
 import Mouse
@@ -108,7 +112,7 @@ import String
 subscriptions : Model -> Sub (Msg m)
 subscriptions model =
     if model.dropdown.open then
-        Mouse.clicks (Dropdown.Click Dropdown.Over >> MenuMsg)
+        Mouse.clicks (Dropdown.Click Dropdown.Over >> DropdownMsg)
     else
         Sub.none
 
@@ -156,17 +160,8 @@ item =
 
 {-| Component action.
 -}
-type Msg m
-    = Click
-    | Focus Geometry
-    | Blur
-
-    | Open Geometry
-
-    | Input String
-
-    | MenuMsg (Dropdown.Msg m)
-    | TextfieldMsg Textfield.Msg
+type alias Msg m
+    = Material.Internal.Select.Msg m
 
 
 {-| Component update.
@@ -175,10 +170,10 @@ update : (Msg msg -> msg) -> Msg msg -> Model -> ( Model, Cmd msg )
 update fwd msg model =
     case msg of
 
-        MenuMsg msg_ ->
+        DropdownMsg msg_ ->
             let
               (dropdown, cmds) =
-                  Dropdown.update (MenuMsg >> fwd) msg_ model.dropdown
+                  Dropdown.update (DropdownMsg >> fwd) msg_ model.dropdown
             in
               { model | dropdown = dropdown } ! [ cmds ]
 
@@ -200,7 +195,7 @@ update fwd msg model =
                 Dropdown.Open g
 
               (dropdown, cmds) =
-                  Dropdown.update (MenuMsg >> fwd) msg_ model.dropdown
+                  Dropdown.update (DropdownMsg >> fwd) msg_ model.dropdown
             in
               { model | dropdown = dropdown } ! [ cmds ]
 
@@ -211,7 +206,7 @@ update fwd msg model =
                         Dropdown.Open g
 
                       (dropdown, cmds) =
-                          Dropdown.update (MenuMsg >> fwd) msg_ model.dropdown
+                          Dropdown.update (DropdownMsg >> fwd) msg_ model.dropdown
                     in
                       { model | dropdown = dropdown, openOnFocus = False } ! [ cmds ]
                 else
@@ -336,8 +331,8 @@ autofocus =
 
 {-| Component view.
 -}
-view :
-    (Msg m -> m)
+view
+    : (Msg m -> m)
     -> Model
     -> List (Property m)
     -> List (Item m)
@@ -348,7 +343,7 @@ view lift model properties items =
             Internal.collect defaultConfig properties
 
         fwdRipple =
-            Item.Ripple >> Dropdown.ItemMsg -1 >> MenuMsg >> lift
+            Item.Ripple >> Dropdown.ItemMsg -1 >> DropdownMsg >> lift
 
         ripple =
             model.dropdown.ripples
@@ -373,6 +368,14 @@ view lift model properties items =
         itemSummaries =
             List.map (Internal.collect Item.defaultConfig << .options) items
 
+        itemInfos =
+            itemSummaries
+            |> List.map (\{config} ->
+                   { enabled = config.enabled
+                   , onSelect = config.onSelect
+                   }
+               )
+
         dropdownOptions =
             config.dropdown
 
@@ -381,10 +384,10 @@ view lift model properties items =
             [ config.textfield
             , [ ( Options.on "keydown"
                     ( Json.map2
-                          (Dropdown.Key defaultIndex itemSummaries)
+                          (Dropdown.Key defaultIndex itemInfos)
                           Html.keyCode
                           decodeAsInput
-                      |> Json.map (MenuMsg >> lift)
+                      |> Json.map (DropdownMsg >> lift)
                     )
                 )
               , Options.on "blur" (Json.succeed (Blur |> lift))
@@ -423,7 +426,7 @@ view lift model properties items =
 
         dropdown =
           Dropdown.view
-              (MenuMsg >> lift)
+              (DropdownMsg >> lift)
               model.dropdown
               ( Dropdown.over :: dropdownOptions )
               items
@@ -491,27 +494,24 @@ indicated in `Material`, and a user message `Select String`.
 
 -}
 render :
-    (Component.Msg button textfield dropdown layout toggles tooltip tabs (Msg m) dispatch -> m)
-    -> Component.Index
+    (Material.Msg.Msg m -> m)
+    -> Index
     -> Store s
     -> List (Property m)
     -> List (Item m)
     -> Html m
 render =
-    Component.render get view Component.SelectMsg
+    Component.render get view Material.Msg.SelectMsg
 
 
 {-| TODO
 -}
-subs :
-    (Component.Msg button textfield dropdown layout toggles tooltips tabs (Msg m) dispatch -> msg)
-    -> Store s
-    -> Sub msg
+subs : (Material.Msg.Msg m -> m) -> Store s -> Sub m
 subs =
-    Component.subs Component.SelectMsg .select subscriptions
+    Component.subs Material.Msg.SelectMsg .select subscriptions
 
 
--- DECODER
+-- HELPERS
 
 
 decodeAsInput : Decoder Geometry

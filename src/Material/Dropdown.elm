@@ -1,7 +1,7 @@
 module Material.Dropdown
     exposing
         ( Property
-        , Alignment(..)
+        , Alignment
         , bottomLeft
         , bottomRight
         , topLeft
@@ -13,9 +13,6 @@ module Material.Dropdown
         , Item
         , item
 
-        , render
-        , react
-
         , Config
         , defaultConfig
 
@@ -23,16 +20,13 @@ module Material.Dropdown
 
         , Model
         , defaultModel
-        , Msg(..)
+        , Msg
         , update
         , view
         )
 
 {-| This component implements a generic dropdown component. It is used by
 Material.Menu and Material.Select.
-
-# Render
-@docs render
 
 # Options
 @docs Property
@@ -54,9 +48,6 @@ Material.Menu and Material.Select.
 
 # Elm architecture
 @docs Model, defaultModel, Msg, update, view
-
-# Internal use
-@docs react
 -}
 
 import Dict exposing (Dict)
@@ -66,10 +57,11 @@ import Material.Component as Component exposing (Indexed, Index)
 import Material.Dropdown.Geometry as Geometry exposing (Geometry, Element)
 import Material.Dropdown.Item as Item
 import Material.Helpers as Helpers exposing (pure, map1st)
+import Material.Internal.Dropdown exposing (Msg(..), Alignment(..))
+import Material.Internal.Item as Item
+import Material.Internal.Options as Internal
 import Material.Options as Options exposing (cs, css, styled, styled_, when)
-import Material.Options.Internal as Internal
 import Material.Ripple as Ripple
-import Mouse
 import String
 
 
@@ -136,39 +128,35 @@ defaultModel =
 
 {-| Component action.
 -}
-type Msg m
-    = Open Geometry
-    | ItemMsg ItemIndex (Item.Msg m)
-    | Close
-    | Click Alignment Mouse.Position
-    | Key (Maybe ItemIndex) (List (ItemSummary m)) KeyCode Geometry
+type alias Msg m
+    = Material.Internal.Dropdown.Msg m
 
 
 {-| The index of an item in the Dropdown's list.
 -}
-type alias ItemIndex =
-  Int
+type alias ItemIndex
+    = Material.Internal.Dropdown.ItemIndex
 
 
-{-| ItemSummary in particular captures an Item's onSelect handler which need to
-be passed from view to model to dispatch it.
-
-TODO: We only need onSelect, to we should refactor this type to have a nicer
-type signature for Key.
--}
-type alias ItemSummary m =
-    Internal.Summary (Item.Config m) m
+--{-| ItemSummary in particular captures an Item's onSelect handler which need to
+--be passed from view to model to dispatch it.
+--
+--TODO: We only need onSelect, to we should refactor this type to have a nicer
+--type signature for Key.
+---}
+--type alias ItemSummary m
+--    = Material.Internal.Dropdown.ItemSummary m
 
 
 {-| Int-representation of a key being pressed.
 -}
-type alias KeyCode =
-    Int
+type alias KeyCode
+    = Material.Internal.Dropdown.KeyCode
 
 
 {-| Component update.
 -}
-update : (Msg msg -> msg) -> Msg msg -> Model -> ( Model, Cmd msg )
+update : (Msg m -> m) -> Msg m -> Model -> ( Model, Cmd m )
 update fwd msg model =
     case msg of
 
@@ -231,7 +219,7 @@ update fwd msg model =
                   else
                     model ! []
 
-        Key defaultIndex summaries keyCode g ->
+        Key defaultIndex itemInfos keyCode g ->
             case keyCode of
 
                 9 ->
@@ -247,9 +235,9 @@ update fwd msg model =
                                 Just index ->
                                     let
                                         cmd =
-                                            List.drop index summaries
+                                            List.drop index itemInfos
                                                 |> List.head
-                                                |> Maybe.andThen (.config >> .onSelect)
+                                                |> Maybe.andThen .onSelect
                                     in
                                         update fwd (ItemMsg index (Item.Select cmd)) model
 
@@ -264,7 +252,7 @@ update fwd msg model =
 
                 32 ->
                   -- SPACE, same as ENTER
-                  update fwd (Key defaultIndex summaries 13 g) model
+                  update fwd (Key defaultIndex itemInfos 13 g) model
 
                 40 ->
                     -- DOWN_ARROW
@@ -273,14 +261,14 @@ update fwd msg model =
                             Maybe.withDefault -1 defaultIndex
 
                         items =
-                            List.indexedMap (,) summaries
+                            List.indexedMap (,) itemInfos
 
                         numItems =
-                            List.length summaries
+                            List.length itemInfos
                     in
                         (items ++ items)
                             |> List.drop (1 + index)
-                            |> List.filter (Tuple.second >> .config >> .enabled)
+                            |> List.filter (Tuple.second >> .enabled)
                             |> List.head
                             |> Maybe.map
                                 (Tuple.first
@@ -299,15 +287,15 @@ update fwd msg model =
                             Maybe.withDefault 0 defaultIndex
 
                         items =
-                            List.indexedMap (,) summaries
+                            List.indexedMap (,) itemInfos
 
                         numItems =
-                            List.length summaries
+                            List.length itemInfos
                     in
                         (items ++ items)
                             |> List.reverse
                             |> List.drop (numItems - index)
-                            |> List.filter (Tuple.second >> .config >> .enabled)
+                            |> List.filter (Tuple.second >> .enabled)
                             |> List.head
                             |> Maybe.map
                                 (Tuple.first
@@ -339,13 +327,8 @@ type alias Config m =
 Specifies where the menu opens in relation to the
 button, rather than where the menu is positioned.
 -}
-type Alignment
-    = BottomLeft
-    | BottomRight
-    | TopLeft
-    | TopRight
-    | Over
-    | Below
+type alias Alignment
+    = Material.Internal.Dropdown.Alignment
 
 
 {-| Default configuration.
@@ -720,51 +703,6 @@ type alias Store s =
 
 ( get, set ) =
     Component.indexed .menu (\x y -> { y | menu = x }) defaultModel
-
-
-{-| Component react function. Internal use only.
--}
-react :
-    (Msg m -> m)
-    -> Msg m
-    -> Index
-    -> Store s
-    -> ( Maybe (Store s), Cmd m )
-react lift msg idx store =
-    update lift msg (get idx store)
-        |> map1st (set idx store >> Just)
-
-
-{-| Component render. Below is an example, assuming boilerplate setup as
-indicated in `Material`, and a user message `Select String`.
-
-    Menu.render Mdl [idx] model.mdl
-      [ Menu.topLeft, Menu.ripple ]
-      [ Menu.item
-        [ onSelect Select "Some item" ]
-        [ text "Some item" ]
-      , Menu.item
-        [ onSelect "Another item", Menu.divider ]
-        [ text "Another item" ]
-      , Menu.item
-        [ onSelect "Disabled item", Menu.disabled ]
-        [ text "Disabled item" ]
-      , Menu.item
-        [ onSelect "Yet another item" ]
-        [ text "Yet another item" ]
-      ]
--}
-render :
-    (Component.Msg button textfield (Msg m) layout toggles tooltip tabs select dispatch
-     -> m
-    )
-    -> Component.Index
-    -> Store s
-    -> List (Property m)
-    -> List (Item m)
-    -> Html m
-render =
-    Component.render get view Component.MenuMsg
 
 
 -- HELPERS

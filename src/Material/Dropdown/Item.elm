@@ -11,11 +11,11 @@ module Material.Dropdown.Item
         , disabled
         , divider
         , ripple
-        , options
+        -- , options
         , selected
 
         , view
-        , Msg(..)
+        , Msg
         )
 
 {-|
@@ -27,7 +27,7 @@ module Material.Dropdown.Item
 @docs onSelect
 
 # Property
-@docs selected, disabled, divider, ripple, options
+@docs selected, disabled, divider, ripple
 
 # API
 @docs Property, Config, defaultConfig
@@ -44,8 +44,10 @@ import Html.Events as Html
 import Html exposing (Html)
 import Html exposing (li)
 import Json.Encode as Json exposing (int)
+import Material.Internal.Item
+import Material.Internal.Options as Options
 import Material.Options exposing (Style, cs, css, when)
-import Material.Options.Internal as Options
+import Material.Internal.Item exposing (Msg(..))
 import Material.Ripple as Ripple
 
 
@@ -77,9 +79,8 @@ item options html =
 
 {-| Component message
 -}
-type Msg m =
-      Select (Maybe m)
-    | Ripple Ripple.Msg
+type alias Msg m
+    = Material.Internal.Item.Msg m
 
 
 {-| Component store
@@ -180,14 +181,8 @@ type alias Property m =
 
 {-| Menu configuration
 -}
-type alias Config m =
-    { onSelect : Maybe m
-    , enabled : Bool
-    , divider : Bool
-    , ripple : Bool
-    , options : List (Style m)
-    , selected : Bool
-    }
+type alias Config m
+    = Material.Internal.Item.Config m
 
 
 {-| Menu default configuration
@@ -198,7 +193,7 @@ defaultConfig =
     , enabled = True
     , divider = False
     , ripple = False
-    , options = []
+    -- , options = []
     , selected = False
     }
 
@@ -231,11 +226,11 @@ ripple =
     Options.option (\config -> { config | ripple = True })
 
 
-{-| TODO
+{- TODO: options?
 -}
-options : List (Style m)-> Property m
-options v =
-    Options.option (\config -> { config | options = v })
+--options : List (Style m)-> Property m
+--options v =
+--    Options.option (\config -> { config | options = v })
 
 
 {-| Menu item displays as selected

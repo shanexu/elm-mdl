@@ -496,6 +496,7 @@ main =
         , subscriptions =
             \model ->
                 Sub.batch
+                    -- TODO: why do I need them {Menu,Select}.subs here?
                     [ Sub.map MenusMsg (Menu.subs Demo.Menus.Mdl model.menus.mdl)
                     , Sub.map SelectMsg (Select.subs Demo.Select.Mdl model.select.mdl)
                     , Material.subscriptions Mdl model
