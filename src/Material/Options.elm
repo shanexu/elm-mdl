@@ -334,25 +334,6 @@ attribute =
     Attribute
 
 
-{-| Install arbitrary `Html.Attribute`. Use like this:
-
-    Options.div
-      [ Options.attr <| Html.onClick MyClickEvent ]
-      [ ... ]
-
-**NOTE** Some attributes might be overridden by attributes
-used internally by *elm-mdl*. Such attributes often include
-`focus` and `blur` on certain elements, such as `Textfield`.
-In the case of `focus` and `blur` you may use `focusin` and `focusout`
-respectively instead (these attributes require polyfill on Firefox).
-
-See [Textfield.onBlur](http://package.elm-lang.org/packages/debois/elm-mdl/latest/Material-Textfield#onBlur) for more information regarding the polyfill.
--}
-attr : Html.Attribute m -> Property c m
-attr =
-    Attribute
-
-
 {-| Options installing css for element to be a flex-box container centering its
 elements.
 -}
