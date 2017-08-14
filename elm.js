@@ -20487,6 +20487,7 @@ var _debois$elm_mdl$Material_Chip$chip = F3(
 		var config = summary.config;
 		var action = _debois$elm_mdl$Material_Chip$getActionElement(config);
 		var isDeletable = _debois$elm_mdl$Material_Chip$hasValue(action);
+		var actualElement = isDeletable ? _elm_lang$html$Html$span : element;
 		var withIcon = A2(
 			_elm_lang$core$Basics_ops['++'],
 			function () {
@@ -20508,7 +20509,7 @@ var _debois$elm_mdl$Material_Chip$chip = F3(
 			A2(_elm_lang$core$List$sortBy, _debois$elm_mdl$Material_Chip$priority, withIcon));
 		return A3(
 			_debois$elm_mdl$Material_Options$styled,
-			element,
+			actualElement,
 			A2(
 				_elm_lang$core$Basics_ops['++'],
 				{
