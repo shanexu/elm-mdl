@@ -10433,19 +10433,11 @@ var _debois$elm_mdl$Material_Grid$offset = F2(
 						'-offset',
 						_debois$elm_mdl$Material_Grid$suffix(device)))));
 	});
-var _debois$elm_mdl$Material_Grid$hide = function (device) {
-	return _debois$elm_mdl$Material_Options$cs(
-		function () {
-			var _p4 = device;
-			if (_p4.ctor === 'All') {
-				return '';
-			} else {
-				return A2(
-					_elm_lang$core$Basics_ops['++'],
-					'mdl-cell--hide',
-					_debois$elm_mdl$Material_Grid$suffix(device));
-			}
-		}());
+var _debois$elm_mdl$Material_Grid$classForHide = function (device) {
+	return A2(
+		_elm_lang$core$Basics_ops['++'],
+		'mdl-cell--hide',
+		_debois$elm_mdl$Material_Grid$suffix(device));
 };
 var _debois$elm_mdl$Material_Grid$order = F2(
 	function (device, n) {
@@ -10470,9 +10462,9 @@ var _debois$elm_mdl$Material_Grid$grid = F2(
 			},
 			A2(
 				_elm_lang$core$List$map,
-				function (_p5) {
-					var _p6 = _p5;
-					return _p6._0;
+				function (_p4) {
+					var _p5 = _p4;
+					return _p5._0;
 				},
 				cells));
 	});
@@ -10483,6 +10475,35 @@ var _debois$elm_mdl$Material_Grid$noSpacing = _debois$elm_mdl$Material_Options$c
 var _debois$elm_mdl$Material_Grid$Phone = {ctor: 'Phone'};
 var _debois$elm_mdl$Material_Grid$Tablet = {ctor: 'Tablet'};
 var _debois$elm_mdl$Material_Grid$Desktop = {ctor: 'Desktop'};
+var _debois$elm_mdl$Material_Grid$hide = function (device) {
+	return _debois$elm_mdl$Material_Options$cs(
+		function () {
+			var _p6 = device;
+			if (_p6.ctor === 'All') {
+				return A2(
+					_elm_lang$core$String$join,
+					' ',
+					A2(
+						_elm_lang$core$List$map,
+						_debois$elm_mdl$Material_Grid$classForHide,
+						{
+							ctor: '::',
+							_0: _debois$elm_mdl$Material_Grid$Desktop,
+							_1: {
+								ctor: '::',
+								_0: _debois$elm_mdl$Material_Grid$Tablet,
+								_1: {
+									ctor: '::',
+									_0: _debois$elm_mdl$Material_Grid$Phone,
+									_1: {ctor: '[]'}
+								}
+							}
+						}));
+			} else {
+				return _debois$elm_mdl$Material_Grid$classForHide(device);
+			}
+		}());
+};
 var _debois$elm_mdl$Material_Grid$All = {ctor: 'All'};
 var _debois$elm_mdl$Material_Grid$Cell = function (a) {
 	return {ctor: 'Cell', _0: a};
