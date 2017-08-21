@@ -30677,7 +30677,7 @@ var _debois$elm_mdl$Demo_Tables$sortable = function (model) {
 			}(),
 			A2(
 				_elm_lang$core$Basics_ops['++'],
-				'Table.onClick Reorder ]\n                  [ text \"Material\" ]\n              , Table.th [ Table.numeric ] [ text \"Quantity\" ]\n              , Table.th [ Table.numeric ] [ text \"Unit Price\" ]\n              ]\n            ]\n          , Table.tbody []\n              ( ',
+				'Options.onClick Reorder ]\n                  [ text \"Material\" ]\n              , Table.th [ Table.numeric ] [ text \"Quantity\" ]\n              , Table.th [ Table.numeric ] [ text \"Unit Price\" ]\n              ]\n            ]\n          , Table.tbody []\n              ( ',
 				A2(
 					_elm_lang$core$Basics_ops['++'],
 					function () {
