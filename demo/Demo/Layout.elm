@@ -212,21 +212,21 @@ view model =
                 [ table
                     [ h4 [] [ text "Included sub-components" ]
                     , Toggles.switch Mdl
-                        [ 8 ]
+                        [ "8" ]
                         model.mdl
                         [ Options.onToggle ToggleHeader
                         , Toggles.value model.withHeader
                         ]
                         [ text "With header" ]
                     , Toggles.switch Mdl
-                        [ 9 ]
+                        [ "9" ]
                         model.mdl
                         [ Options.onToggle ToggleDrawer
                         , Toggles.value model.withDrawer
                         ]
                         [ text "With drawer" ]
                     , Toggles.switch Mdl
-                        [ 10 ]
+                        [ "10" ]
                         model.mdl
                         [ Options.onToggle ToggleTabs
                         , Toggles.value model.withTabs
@@ -236,7 +236,7 @@ view model =
                 , table
                     [ h4 [] [ text "Size-dependent behaviour" ]
                     , Toggles.switch Mdl
-                        [ 0 ]
+                        [ "0" ]
                         model.mdl
                         [ Options.onToggle ToggleFixedHeader
                         , Toggles.value model.fixedHeader
@@ -245,7 +245,7 @@ view model =
                     , explain """The header by default disappears on small devices.
                            This option forces the display of the header on all devices. """
                     , Toggles.switch Mdl
-                        [ 1 ]
+                        [ "1" ]
                         model.mdl
                         [ Options.onToggle ToggleFixedDrawer
                         , Toggles.value model.fixedDrawer
@@ -254,7 +254,7 @@ view model =
                     , explain """The drawer is by default hidden on all devices.
                            This option forces the drawer to be open on large devices. """
                     , Toggles.switch Mdl
-                        [ 2 ]
+                        [ "2" ]
                         model.mdl
                         [ Options.onToggle ToggleFixedTabs
                         , Toggles.value model.fixedTabs
@@ -267,7 +267,7 @@ view model =
                 , table
                     [ h4 [] [ text "Header behaviour" ]
                     , Toggles.radio Mdl
-                        [ 3 ]
+                        [ "3" ]
                         model.mdl
                         [ Toggles.group "kind"
                         , Toggles.value <| model.header == Standard
@@ -275,7 +275,7 @@ view model =
                         ]
                         [ text "Standard" ]
                     , Toggles.radio Mdl
-                        [ 4 ]
+                        [ "4" ]
                         model.mdl
                         [ Toggles.group "kind"
                         , Toggles.value <| model.header == Seamed
@@ -283,7 +283,7 @@ view model =
                         ]
                         [ text "Seamed" ]
                     , Toggles.radio Mdl
-                        [ 5 ]
+                        [ "5" ]
                         model.mdl
                         [ Toggles.group "kind"
                         , Toggles.value <| model.header == Scrolling
@@ -291,7 +291,7 @@ view model =
                         ]
                         [ text "Scrolling" ]
                     , Toggles.radio Mdl
-                        [ 6 ]
+                        [ "6" ]
                         model.mdl
                         [ Toggles.group "kind"
                         , Toggles.value <| model.header == (Waterfall True)
@@ -299,7 +299,7 @@ view model =
                         ]
                         [ text "Waterfall (top)" ]
                     , Toggles.radio Mdl
-                        [ 7 ]
+                        [ "7" ]
                         model.mdl
                         [ Toggles.group "kind"
                         , Toggles.value <| model.header == (Waterfall False)
@@ -440,7 +440,7 @@ view model =
             , explain """The main layout container has HTML id "elm-mdl-layout-main". You can use this id, e.g., 
                          to scroll to top. Try it out: """
             , Button.render Mdl
-                [ 0 ]
+                [ "0" ]
                 model.mdl
                 [ Button.raised
                 , Button.colored

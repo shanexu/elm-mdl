@@ -174,7 +174,7 @@ textfields : Model -> List ( String, Html Msg, String )
 textfields model =
     [ ( "Basic textfield"
       , Textfield.render Mdl
-            [ 0 ]
+            [ "0" ]
             model.mdl
             [ Options.onInput Upd0 ]
             []
@@ -186,7 +186,7 @@ textfields model =
       )
     , ( "Labelled textfield"
       , Textfield.render Mdl
-            [ 1 ]
+            [ "1" ]
             model.mdl
             [ Textfield.label "Labelled" ]
             []
@@ -198,7 +198,7 @@ textfields model =
       )
     , ( "Labelled textfield, floating label"
       , Textfield.render Mdl
-            [ 2 ]
+            [ "2" ]
             model.mdl
             [ Textfield.label "Floating label"
             , Textfield.floatingLabel
@@ -216,7 +216,7 @@ textfields model =
       )
     , ( "Disabled textfield"
       , Textfield.render Mdl
-            [ 3 ]
+            [ "3" ]
             model.mdl
             [ Textfield.label "Disabled"
             , Textfield.disabled
@@ -243,7 +243,7 @@ textfields model =
       )
     , ( "Textfield with error checking"
       , Textfield.render Mdl
-            [ 4 ]
+            [ "4" ]
             model.mdl
             [ Textfield.label "w/error checking"
             , Textfield.error ("Doesn't match " ++ rx)
@@ -264,7 +264,7 @@ textfields model =
       )
     , ( "Textfield for passwords"
       , Textfield.render Mdl
-            [ 5 ]
+            [ "5" ]
             model.mdl
             [ Textfield.label "Enter password"
             , Textfield.floatingLabel
@@ -282,7 +282,7 @@ textfields model =
       )
     , ( "Textfield for email"
       , Textfield.render Mdl
-            [ 6 ]
+            [ "6" ]
             model.mdl
             [ Textfield.label "Enter email"
             , Textfield.floatingLabel
@@ -299,7 +299,7 @@ textfields model =
       )
     , ( "Expandable textfield"
       , Textfield.render Mdl
-            [ 7 ]
+            [ "7" ]
             model.mdl
             [ Textfield.label "Expandable"
             , Textfield.floatingLabel
@@ -319,7 +319,7 @@ textfields model =
       )
     , ( "Multi-line textfield"
       , Textfield.render Mdl
-            [ 8 ]
+            [ "8" ]
             model.mdl
             [ Textfield.label "Default multiline textfield"
             , Textfield.textarea
@@ -335,7 +335,7 @@ textfields model =
       )
     , ( "Multi-line textfield, 6 rows"
       , Textfield.render Mdl
-            [ 9 ]
+            [ "9" ]
             model.mdl
             [ Textfield.label "Multiline with 6 rows"
             , Textfield.floatingLabel
@@ -356,7 +356,7 @@ textfields model =
     , ( "Multi-line textfield with character limit"
       , Html.div []
             [ Textfield.render Mdl
-                [ 10 ]
+                [ "10" ]
                 model.mdl
                 [ Textfield.label
                     ("Multiline textfield ("
@@ -402,7 +402,7 @@ textfields model =
     , ( "Multi-line textfield with row limit"
       , Html.div []
             [ Textfield.render Mdl
-                [ 11 ]
+                [ "11" ]
                 model.mdl
                 [ Textfield.label
                     ("Multiline textfield ("
@@ -441,7 +441,7 @@ custom model =
             , css "align-items" "flex-start"
             ]
             [ Textfield.render Mdl
-                [ 11 ]
+                [ "11" ]
                 model.mdl
                 [ Textfield.floatingLabel
                 , Textfield.label <|
@@ -455,7 +455,7 @@ custom model =
                 ]
                 []
             , Button.render Mdl
-                [ 12 ]
+                [ "12" ]
                 model.mdl
                 [ Options.onClick Focus
                 , Button.colored
@@ -487,7 +487,7 @@ custom model =
       , Html.div
             []
             [ Textfield.render Mdl
-                [ 13 ]
+                [ "13" ]
                 model.mdl
                 [ Textfield.label "Custom event handling"
                 , Textfield.textarea

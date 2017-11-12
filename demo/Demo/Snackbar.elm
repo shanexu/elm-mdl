@@ -294,7 +294,7 @@ view model =
                 [ cell
                     [ size All 4, size Desktop 2 ]
                     [ Button.render Mdl
-                        [ 0 ]
+                        [ "0" ]
                         model.mdl
                         [ Button.raised
                         , Options.onClick AddSnackbar
@@ -306,7 +306,7 @@ view model =
                 , cell
                     [ size All 4, size Desktop 2 ]
                     [ Button.render Mdl
-                        [ 1 ]
+                        [ "1" ]
                         model.mdl
                         [ Button.raised
                         , Button.colored

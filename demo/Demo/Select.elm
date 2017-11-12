@@ -64,7 +64,7 @@ view model =
     , Grid.grid []
         [ Grid.cell column
             [ Select.render Mdl
-                [ 0 ]
+                [ "0" ]
                 model.mdl
                 [ Select.label "Dinosaurs"
                 , Select.floatingLabel
@@ -115,7 +115,7 @@ view model =
     , Grid.grid []
         [ Grid.cell column
             [ Select.render Mdl
-                [ 1 ]
+                [ "1" ]
                 model.mdl
                 [ Select.label "Dinosaurs"
                 , Select.value (Maybe.withDefault "" (Dict.get 1 model.values))
@@ -180,7 +180,7 @@ view model =
                         |> Maybe.withDefault ""
               in
                 Select.render Mdl
-                    [ 2 ]
+                    [ "2" ]
                     model.mdl
                     [ Select.label "Dinosaurs"
                     , Select.value selectedValue
@@ -236,7 +236,7 @@ view model =
     , Grid.grid []
         [ Grid.cell column
             [ Select.render Mdl
-                [ 0 ]
+                [ "0" ]
                 model.mdl
                 [ Select.value (Maybe.withDefault "" (Dict.get 0 model.values))
                 , Select.below

@@ -102,7 +102,7 @@ view model =
                             [ text "Unread" ]
                         ]
                     , Button.render Mdl
-                        [ 0 ]
+                        [ "0" ]
                         model.mdl
                         [ Options.onClick Decrease
                         , Button.raised

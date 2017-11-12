@@ -88,9 +88,9 @@ view model =
         , css "justify-content" "center"
         ]
         [ demoTooltip
-            [ Icon.view "add" [ Tooltip.attach Mdl [ 0 ] ]
+            [ Icon.view "add" [ Tooltip.attach Mdl [ "0" ] ]
             , Tooltip.render Mdl
-                [ 0 ]
+                [ "0" ]
                 model.mdl
                 []
                 [ text "This is an add icon" ]
@@ -107,10 +107,10 @@ view model =
         , demoTooltip
             [ span [] [ text "HTML is related to " ]
             , Options.styled span
-                [ Tooltip.attach Mdl [ 1 ] ]
+                [ Tooltip.attach Mdl [ "1" ] ]
                 [ i [] [ text "XML" ] ]
             , Tooltip.render Mdl
-                [ 1 ]
+                [ "1" ]
                 model.mdl
                 [ Tooltip.left ]
                 [ text "XML is an acronym for eXtensible Markup Language" ]
@@ -128,9 +128,9 @@ view model =
         """
         , demoTooltip
             [ Icon.view "share"
-                [ Tooltip.attach Mdl [ 2 ] ]
+                [ Tooltip.attach Mdl [ "2" ] ]
             , Tooltip.render Mdl
-                [ 2 ]
+                [ "2" ]
                 model.mdl
                 [ Tooltip.large
                 , Tooltip.right
@@ -150,14 +150,14 @@ view model =
         """
         , demoTooltip
             [ Button.render Mdl
-                [ 0 ]
+                [ "0" ]
                 model.mdl
                 [ Button.raised
-                , Tooltip.attach Mdl [ 3 ]
+                , Tooltip.attach Mdl [ "3" ]
                 ]
                 [ text "Click me!" ]
             , Tooltip.render Mdl
-                [ 3 ]
+                [ "3" ]
                 model.mdl
                 [ Tooltip.top
                 , Tooltip.large
@@ -207,9 +207,9 @@ view model =
         """
         , demoTooltip
             [ Icon.view "face"
-                [ Tooltip.attach Mdl [ 4 ] ]
+                [ Tooltip.attach Mdl [ "4" ] ]
             , Tooltip.render Mdl
-                [ 4 ]
+                [ "4" ]
                 model.mdl
                 [ Tooltip.large
                 , Tooltip.top

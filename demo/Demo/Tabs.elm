@@ -98,7 +98,7 @@ exampleTab =
 view : Model -> Html Msg
 view model =
     [ Tabs.render Mdl
-        [ 0 ]
+        [ "0" ]
         model.mdl
         [ Tabs.ripple
         , Tabs.onSelectTab SelectTab

@@ -54,12 +54,12 @@ element model =
             ]
         , Dialog.actions []
             [ Button.render Mdl
-                [ 0 ]
+                [ "0" ]
                 model.mdl
                 [ Dialog.closeOn "click" ]
                 [ text "Chess" ]
             , Button.render Mdl
-                [ 1 ]
+                [ "1" ]
                 model.mdl
                 [ Button.disabled ]
                 [ text "GTNW" ]
@@ -86,7 +86,7 @@ view model =
       ]
 
     , Button.render Mdl
-        [ 1 ]
+        [ "1" ]
         model.mdl
         [ Dialog.openOn "click" ]
         [ text "Open dialog" ]

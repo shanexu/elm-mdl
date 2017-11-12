@@ -310,7 +310,7 @@ secondaryAction1 model =
     let
         star model k =
             Button.render Mdl
-                [ k ]
+                [ toString k ]
                 model.mdl
                 [ Button.icon
                 , Button.accent |> when (Set.member k model.toggles)
@@ -368,7 +368,7 @@ secondaryAction2 model =
                     [ Lists.content [] [ text "Include checkbox?" ]
                     , Lists.content2 []
                         [ Toggles.checkbox Mdl
-                            [ 4 ]
+                            [ "4" ]
                             model.mdl
                             [ Toggles.value (Set.member 4 model.toggles)
                             , Options.onToggle (Flip 4)
@@ -382,7 +382,7 @@ secondaryAction2 model =
                         [ Options.span
                             [ Lists.action2 ]
                             [ Toggles.radio Mdl
-                                [ 5 ]
+                                [ "5" ]
                                 model.mdl
                                 [ Toggles.value (Set.member 5 model.toggles)
                                 , Options.onToggle (Flip 5)
@@ -396,7 +396,7 @@ secondaryAction2 model =
                     [ Lists.content [] [ text "Include switch?" ]
                     , Lists.content2 []
                         [ Toggles.switch Mdl
-                            [ 6 ]
+                            [ "6" ]
                             model.mdl
                             [ Toggles.value (Set.member 6 model.toggles)
                             , Options.onToggle (Flip 6)
@@ -771,7 +771,7 @@ mail model idx ( name, img, subj, date, txt ) =
             , Lists.content2 []
                 [ Lists.info2 [] [ text date ]
                 , Button.render Mdl
-                    [ k ]
+                    [ toString k ]
                     model.mdl
                     [ Button.icon
                     , Options.onClick (Flip k)

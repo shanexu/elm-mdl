@@ -24,9 +24,9 @@ for statically known top-level components, then use `[0,0]`, `[0,1]`, ...
 for a dynamically generated list of components.
 -}
 type alias Index =
-    List Int
+    List String
 
-  
+
 {-| Type of elm-mdl global messages. 
 -}
 type Msg m

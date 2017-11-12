@@ -134,7 +134,7 @@ basic model align =
     { title = "Basic "
     , menu =
         Menu.render Mdl
-            [ 0 ]
+            [ "0" ]
             model.mdl
             (options model align)
             ( let
@@ -176,7 +176,7 @@ edit model align =
     { title = "Disabled items and dividers"
     , menu =
         Menu.render Mdl
-            [ 1 ]
+            [ "1" ]
             model.mdl
             (options model align)
             [ Item.item
@@ -218,7 +218,7 @@ icons model align =
                 css "padding-right" "24px"
         in
             Menu.render Mdl
-                [ 2 ]
+                [ "2" ]
                 model.mdl
                 (options model align)
                 [ Item.item
@@ -279,7 +279,7 @@ checkmarks model align =
         { title = "Checkmarks"
         , menu =
             Menu.render Mdl
-                [ 3 ]
+                [ "3" ]
                 model.mdl
                 (options model align)
                 [ Item.item
@@ -424,7 +424,7 @@ view model =
                     , Grid.offset Grid.Desktop 4
                     ]
                     [ Textfield.render Mdl
-                        [ 2 ]
+                        [ "2" ]
                         model.mdl
                         [ Textfield.label "Menu icon"
                         , Textfield.floatingLabel

@@ -146,7 +146,7 @@ view model =
                         [ div [ Options.css "padding-top" "30px" ] []
                         , div []
                             [ Button.render Mdl
-                                [ 4 ]
+                                [ "4" ]
                                 model.mdl
                                 [ Button.raised
                                 , Button.colored
@@ -157,7 +157,7 @@ view model =
                                 [ text "Resume" ]
                             , Options.div [ css "width" "2em", css "display" "inline-block" ] []
                             , Button.render Mdl
-                                [ 5 ]
+                                [ "5" ]
                                 model.mdl
                                 [ Button.raised
                                 , Button.colored

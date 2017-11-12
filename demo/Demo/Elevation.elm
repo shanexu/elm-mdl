@@ -130,7 +130,7 @@ demo2 model =
                     , css "max-width" "384px"
                     ]
                 , Toggles.switch Mdl
-                    [ 0 ]
+                    [ "0" ]
                     model.mdl
                     [ Options.onToggle FlipTransition
                     , Toggles.value model.transition

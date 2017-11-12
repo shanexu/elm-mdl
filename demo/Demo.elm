@@ -308,7 +308,7 @@ drawer model =
             , Options.onClick ToggleLog
             ]
             [ text "Log messages" 
-            , Toggles.checkbox Mdl [0] model.mdl
+            , Toggles.checkbox Mdl [ "0" ] model.mdl
                 [ Toggles.ripple
                 , Toggles.value model.logMessages
                 , css "width" "32px"

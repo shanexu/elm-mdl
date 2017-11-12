@@ -305,7 +305,7 @@ view model =
                             ++ []
                         )
                     , Button.render Mdl
-                        [ 0 ]
+                        [ "0" ]
                         model.mdl
                         [ Button.colored
                         , Button.ripple

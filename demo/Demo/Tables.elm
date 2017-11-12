@@ -236,7 +236,7 @@ selectable model =
                     [ Table.tr []
                         [ Table.th []
                             [ Toggles.checkbox Mdl
-                                [ -1 ]
+                                [ "-1" ]
                                 model.mdl
                                 [ Options.onToggle ToggleAll
                                 , Toggles.value (allSelected model)
@@ -256,7 +256,7 @@ selectable model =
                                     [ Table.selected |> when (Set.member (key item) model.selected) ]
                                     [ Table.td []
                                         [ Toggles.checkbox Mdl
-                                            [ idx ]
+                                            [ toString idx ]
                                             model.mdl
                                             [ Options.onToggle (Toggle <| key item)
                                             , Toggles.value <| Set.member (key item) model.selected

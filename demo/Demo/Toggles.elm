@@ -137,7 +137,7 @@ view model =
                 []
                 [ Grid.cell row
                     [ Toggles.switch Mdl
-                        [ 0 ]
+                        [ "0" ]
                         model.mdl
                         [ Options.onToggle (Switch 0)
                         , Toggles.ripple
@@ -151,7 +151,7 @@ view model =
                     ]
                 , Grid.cell row
                     [ Toggles.checkbox Mdl
-                        [ 1 ]
+                        [ "1" ]
                         model.mdl
                         [ Options.onToggle (Switch 1)
                         , Toggles.ripple
@@ -165,7 +165,7 @@ view model =
                     ]
                 , Grid.cell row
                     [ Toggles.radio Mdl
-                        [ 2 ]
+                        [ "2" ]
                         model.mdl
                         [ Toggles.value (2 == model.radios)
                         , Toggles.group "MyRadioGroup"
@@ -174,7 +174,7 @@ view model =
                         ]
                         [ text "Emacs" ]
                     , Toggles.radio Mdl
-                        [ 3 ]
+                        [ "3" ]
                         model.mdl
                         [ css "margin-left" "2rem"
                         , Toggles.value (3 == model.radios)
@@ -231,7 +231,7 @@ view model =
                     , Grid.align Grid.Bottom
                     ]
                     [ Button.render Mdl
-                        [ 5 ]
+                        [ "5" ]
                         model.mdl
                         [ Button.raised
                         , Button.colored
@@ -243,7 +243,7 @@ view model =
                         ]
                         [ text "Increase" ]
                     , Toggles.switch Mdl
-                        [ 4 ]
+                        [ "4" ]
                         model.mdl
                         [ Options.onToggle ToggleCounting
                         , Toggles.ripple
@@ -260,7 +260,7 @@ view model =
                         |> List.map
                             (\idx ->
                                 Toggles.checkbox Mdl
-                                    [ 6, idx ]
+                                    [ "6", toString idx ]
                                     model.mdl
                                     [ Toggles.value (readBit idx model.counter)
                                     , Toggles.ripple

@@ -235,7 +235,7 @@ viewButtons model =
                                                     ]
                                                 ]
                                                 [ Button.render Mdl
-                                                    [ idx0, idx1, idx2 ]
+                                                    (List.map toString [ idx0, idx1, idx2 ])
                                                     model.mdl
                                                     [ case kind of
                                                         Flat ->
@@ -329,7 +329,7 @@ view model =
           "<href>"`. The example below opens the Grid tab of this demo."""
             ]
         , Button.render Mdl
-            [ 9, 0, 0, 1 ]
+            (List.map toString [ 9, 0, 0, 1 ])
             model.mdl
             [ Button.ripple
             , Button.colored
@@ -356,7 +356,7 @@ view model =
         """
             ]
         , Button.render Mdl
-            [ 9, 0, 0, 2 ]
+            (List.map toString [ 9, 0, 0, 2 ])
             model.mdl
             [ Button.ripple
             , Button.colored

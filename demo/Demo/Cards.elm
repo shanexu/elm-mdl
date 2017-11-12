@@ -158,7 +158,7 @@ table model =
                     ]
                 , Card.menu []
                     [ Button.render Mdl
-                        [ 0, 0 ]
+                        (List.map toString [ 0, 0 ])
                         model.mdl
                         [ Button.icon, Button.ripple, white ]
                         [ Icon.i "share" ]
@@ -222,12 +222,12 @@ grenadine model =
                 , Card.actions
                     [ Card.border ]
                     [ Button.render Mdl
-                        [ 1, 0 ]
+                        (List.map toString [ 1, 0 ])
                         model.mdl
                         [ Button.ripple, Button.accent ]
                         [ text "Ingredients" ]
                     , Button.render Mdl
-                        [ 1, 1 ]
+                        (List.map toString [ 1, 1 ])
                         model.mdl
                         [ Button.ripple, Button.accent ]
                         [ text "Cocktails" ]
@@ -298,7 +298,7 @@ reminder model =
                     ]
                     [ Options.span [ Typography.caption, Typography.contrast 0.87 ] [ text "August 3, 2016" ]
                     , Button.render Mdl
-                        [ 1 ]
+                        [ "1" ]
                         model.mdl
                         [ Button.icon, Button.ripple ]
                         [ Icon.i "phone" ]
@@ -532,7 +532,7 @@ weather model =
                     ]
                 , Card.actions []
                     [ Tabs.render Mdl
-                        [ 5, 2 ]
+                        (List.map toString [ 5, 2 ])
                         model.mdl
                         [ Tabs.ripple
                         , Tabs.onSelectTab SetTab
@@ -662,12 +662,12 @@ event model =
                 , Card.actions
                     [ Card.border, css "vertical-align" "center", css "text-align" "right", white ]
                     [ Button.render Mdl
-                        [ 8, 1 ]
+                        (List.map toString [ 8, 1 ])
                         model.mdl
                         [ Button.icon, Button.ripple ]
                         [ Icon.i "favorite_border" ]
                     , Button.render Mdl
-                        [ 8, 2 ]
+                        (List.map toString [ 8, 2 ])
                         model.mdl
                         [ Button.icon, Button.ripple ]
                         [ Icon.i "event_available" ]
